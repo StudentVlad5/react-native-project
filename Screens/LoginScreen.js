@@ -18,22 +18,19 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import validator from 'validator';
 
 
-export const RegistrationScreen = () => {
-  const [name, setName] = useState("");
+export const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidePass, setHidePass] = useState(true);
-  const [nameHoverInput,setNameHoverInput] = useState(false);
   const [emailHoverInput,setEmailHoverInput] = useState(false);
   const [passwordHoverInput,setPasswordHoverInput] = useState(false);
    
-  const nameHandler = (text) => setName(text);
   const emailHandler = (text) => setEmail(text);
   const passwordHandler = (text) => setPassword(text);
     
   const onLogin = () => {
     Keyboard.dismiss();
-      if(validator.isEmail(email)){Alert.alert("Дані реєстрації", `${name} + ${email} + ${password}`)} else {Alert.alert("Невірно вказано email")}
+    if(validator.isEmail(email)){Alert.alert("Дані для входу", `${email} + ${password}`)} else {Alert.alert("Невірно вказано email")}
   };
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
@@ -45,26 +42,13 @@ export const RegistrationScreen = () => {
     height: windowHeight, }}>
       <ImageBackground source={require('../assets/background.png')} style={styles.image}>
           <View style={styles.containerTop}>
-              <View style={styles.addAvatar}>
-                <Image source={require('../assets/add.png')} style={styles.addImg}/>
-              </View>
           </View>
           <View style={styles.container}>
               <KeyboardAvoidingView
               behavior={Platform.OS == "ios" ? "padding" : "height"}
               >
                 <View style={styles.form}>
-                  <Text style={styles.formTitle}>Реєстрація</Text>
-                  <View>
-                    <TextInput
-                        value={name}
-                        onChangeText={nameHandler}
-                        placeholder="Логін"
-                        style={{...styles.input, backgroundColor: nameHoverInput ?'white' : '#F6F6F6', borderColor: nameHoverInput? 'orange':'#E8E8E8'}}
-                        onFocus={() => setNameHoverInput(true)}
-                        onBlur={() => setNameHoverInput(false)}
-                    />
-                  </View>
+                  <Text style={styles.formTitle}>Увійти</Text>
                   <View>
                     <TextInput
                         value={email}
@@ -89,8 +73,8 @@ export const RegistrationScreen = () => {
                       name={hidePass ? 'eye-slash' : 'eye'}
                       onPress={() => setHidePass(!hidePass)} />
                   </View>
-                  <TouchableOpacity activeOpacity={0.7} style={styles.btn} onPress={onLogin}><Text style={styles.btnText}>Зареєструватися</Text></TouchableOpacity>
-                  <Text style={styles.logInTitle}>Вже зареєстрований? Увійти </Text>
+                  <TouchableOpacity activeOpacity={0.7} style={styles.btn} onPress={onLogin}><Text style={styles.btnText}>Увійти</Text></TouchableOpacity>
+                  <Text style={styles.logInTitle}>Відсутній акаунт? Зареєструватися </Text>
                 </View>
               </KeyboardAvoidingView>
           </View>
@@ -102,29 +86,16 @@ export const RegistrationScreen = () => {
 
 const styles = StyleSheet.create({
   containerTop: {
-    flex: 0.32,
+    flex: 0.4,
   },
   container: {
-    flex: 0.68,
+    flex: 0.6,
     height: 549,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-  },
-  addAvatar: {
-    position: 'absolute',
-    width: 120,
-    height: 120,
-    backgroundColor: '#F6F6F6',
-    alignSelf: 'center',
-    top: '70%',
-    shadowColor: 'rgba(0, 0, 0, 0.25)',
-    shadowOffset:{width: 4,height: 4},
-    shadowRadius: 5,
-    borderRadius: 16,
-    zIndex: 10,
   },
   form:{
     paddingHorizontal: 16,
@@ -140,7 +111,7 @@ const styles = StyleSheet.create({
     lineHeight: 35,
     textAlign: 'center',
     letterSpacing: .16,
-    marginTop: 92,
+    marginTop: 32,
     marginBottom: 32,
     color: '#212121',
   },
