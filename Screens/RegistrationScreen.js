@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import validator from 'validator';
 
 
-export const RegistrationScreen = () => {
+export const RegistrationScreen = ({handleChangePage}) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -89,8 +89,13 @@ export const RegistrationScreen = () => {
                       name={hidePass ? 'eye-slash' : 'eye'}
                       onPress={() => setHidePass(!hidePass)} />
                   </View>
-                  <TouchableOpacity activeOpacity={0.7} style={styles.btn} onPress={onLogin}><Text style={styles.btnText}>Зареєструватися</Text></TouchableOpacity>
-                  <Text style={styles.logInTitle}>Вже зареєстрований? Увійти </Text>
+                  <TouchableOpacity activeOpacity={0.7} style={styles.btn} onPress={onLogin}>
+                    <Text style={styles.btnText}>Зареєструватися
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=>handleChangePage("loginScreen")}>
+                    <Text style={styles.logInTitle}>Вже зареєстрований? Увійти </Text>
+                  </TouchableOpacity>
                 </View>
               </KeyboardAvoidingView>
           </View>

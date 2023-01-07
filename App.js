@@ -1,14 +1,19 @@
+
+import {useState} from 'react'; 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-// import { RegistrationScreen } from "./Screens/RegistrationScreen";
+import { StyleSheet, View } from 'react-native';
+import { RegistrationScreen } from "./Screens/RegistrationScreen";
 import { LoginScreen } from "./Screens/LoginScreen";
 
 
 export default function App() {
+  const [statusEnter,setStatusEnter] = useState('loginScreen');
+  const handleChangePage = (newstatusEnter) => {setStatusEnter(newstatusEnter)}
+
   return (
     <View style={styles.container}>
-      {/* <RegistrationScreen/> */}
-      <LoginScreen/>
+      {statusEnter === 'loginScreen' && <LoginScreen handleChangePage={handleChangePage}/>}
+      {statusEnter === 'registrationScreen' && <RegistrationScreen handleChangePage={handleChangePage}/>}
       <StatusBar style="auto" />
     </View>
   );
