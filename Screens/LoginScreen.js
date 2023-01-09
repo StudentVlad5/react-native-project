@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   Dimensions,
@@ -16,7 +17,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome5";
 import validator from "validator";
 
-export const LoginScreen = ({ handleChangePage }) => {
+export const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidePass, setHidePass] = useState(true);
@@ -38,77 +39,86 @@ export const LoginScreen = ({ handleChangePage }) => {
   const windowHeight = Dimensions.get("window").height;
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={{ width: windowWidth, height: windowHeight }}>
-        <ImageBackground
-          source={require("../assets/background.png")}
-          style={styles.image}
-        >
-          <View style={styles.containerTop}></View>
-          <View style={styles.container}>
-            <KeyboardAvoidingView
-              behavior={Platform.OS == "ios" ? "padding" : "height"}
-            >
-              <View style={styles.form}>
-                <Text style={styles.formTitle}>Увійти</Text>
-                <View>
-                  <TextInput
-                    value={email}
-                    onChangeText={emailHandler}
-                    placeholder="Адреса електроної пошти"
-                    style={{
-                      ...styles.input,
-                      backgroundColor: emailHoverInput ? "white" : "#F6F6F6",
-                      borderColor: emailHoverInput ? "orange" : "#E8E8E8",
-                    }}
-                    onFocus={() => setEmailHoverInput(true)}
-                    onBlur={() => setEmailHoverInput(false)}
-                  />
+    <View style={styles.wrap}>
+      <StatusBar style="auto" />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={{ width: windowWidth, height: windowHeight }}>
+          <ImageBackground
+            source={require("../assets/background.png")}
+            style={styles.image}
+          >
+            <View style={styles.containerTop}></View>
+            <View style={styles.container}>
+              <KeyboardAvoidingView
+                behavior={Platform.OS == "ios" ? "padding" : "height"}
+              >
+                <View style={styles.form}>
+                  <Text style={styles.formTitle}>Увійти</Text>
+                  <View>
+                    <TextInput
+                      value={email}
+                      onChangeText={emailHandler}
+                      placeholder="Адреса електроної пошти"
+                      style={{
+                        ...styles.input,
+                        backgroundColor: emailHoverInput ? "white" : "#F6F6F6",
+                        borderColor: emailHoverInput ? "orange" : "#E8E8E8",
+                      }}
+                      onFocus={() => setEmailHoverInput(true)}
+                      onBlur={() => setEmailHoverInput(false)}
+                    />
+                  </View>
+                  <View>
+                    <TextInput
+                      value={password}
+                      onChangeText={passwordHandler}
+                      placeholder="Пароль"
+                      secureTextEntry={hidePass ? true : false}
+                      style={{
+                        ...styles.input,
+                        backgroundColor: passwordHoverInput
+                          ? "white"
+                          : "#F6F6F6",
+                        borderColor: passwordHoverInput ? "orange" : "#E8E8E8",
+                      }}
+                      onFocus={() => setPasswordHoverInput(true)}
+                      onBlur={() => setPasswordHoverInput(false)}
+                    />
+                    <Icon
+                      style={styles.iconView}
+                      name={hidePass ? "eye-slash" : "eye"}
+                      onPress={() => setHidePass(!hidePass)}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={styles.btn}
+                    onPress={onLogin}
+                  >
+                    <Text style={styles.btnText}>Увійти</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=>navigation.navigate('Registration')}>
+                    <Text style={styles.logInTitle}>
+                      Відсутній акаунт? Зареєструватися
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-                <View>
-                  <TextInput
-                    value={password}
-                    onChangeText={passwordHandler}
-                    placeholder="Пароль"
-                    secureTextEntry={hidePass ? true : false}
-                    style={{
-                      ...styles.input,
-                      backgroundColor: passwordHoverInput ? "white" : "#F6F6F6",
-                      borderColor: passwordHoverInput ? "orange" : "#E8E8E8",
-                    }}
-                    onFocus={() => setPasswordHoverInput(true)}
-                    onBlur={() => setPasswordHoverInput(false)}
-                  />
-                  <Icon
-                    style={styles.iconView}
-                    name={hidePass ? "eye-slash" : "eye"}
-                    onPress={() => setHidePass(!hidePass)}
-                  />
-                </View>
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  style={styles.btn}
-                  onPress={onLogin}
-                >
-                  <Text style={styles.btnText}>Увійти
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>handleChangePage("registrationScreen")}>
-                  <Text
-                    style={styles.logInTitle}>
-                    Відсутній акаунт? Зареєструватися
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </KeyboardAvoidingView>
-          </View>
-        </ImageBackground>
-      </View>
-    </TouchableWithoutFeedback>
+              </KeyboardAvoidingView>
+            </View>
+          </ImageBackground>
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  wrap: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   containerTop: {
     flex: 0.4,
   },
