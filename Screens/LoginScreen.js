@@ -16,13 +16,15 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import validator from "validator";
+import { useNavigation } from "@react-navigation/native";
 
-export const LoginScreen = ({navigation}) => {
+export const LoginScreen = (isAuth) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidePass, setHidePass] = useState(true);
   const [emailHoverInput, setEmailHoverInput] = useState(false);
   const [passwordHoverInput, setPasswordHoverInput] = useState(false);
+  const navigation = useNavigation();
 
   const emailHandler = (text) => setEmail(text);
   const passwordHandler = (text) => setPassword(text);
@@ -97,7 +99,9 @@ export const LoginScreen = ({navigation}) => {
                   >
                     <Text style={styles.btnText}>Увійти</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={()=>navigation.navigate('Registration')}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Registration")}
+                  >
                     <Text style={styles.logInTitle}>
                       Відсутній акаунт? Зареєструватися
                     </Text>

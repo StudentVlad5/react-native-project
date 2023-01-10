@@ -1,17 +1,25 @@
 import React from "react";
-import {Text, View, StyleSheet} from "react-native";
+import {Text, View, StyleSheet, TouchableWithoutFeedback, Alert} from "react-native";
+import { Entypo } from "@expo/vector-icons";
+
 
 export const CreateScreen = () => {
     return (
-        <View style={styles.container}>
-        <Text>CreateScreen</Text>
-        </View>
-    )
+    <View style={styles.container}>
+      <Text>Створити публікацію</Text>
+      <TouchableWithoutFeedback onPress={() => Alert.alert("Повернення на логін")}>
+        <View>
+       <Entypo
+        name="log-out"
+        size={24}
+        color="black"
+      /></View>
+      </TouchableWithoutFeedback>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
     container:
-    {flex: 1,
-    justifyContent:'center',
-    alignItems: "center",}
+    {flex: 1, justifyContent: "flex-start", alignItems: "center" }
 })
