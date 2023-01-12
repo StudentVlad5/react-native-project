@@ -1,28 +1,24 @@
 import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Alert,
-} from "react-native";
-import { Entypo } from "@expo/vector-icons";
+import { createStackNavigator } from "@react-navigation/stack";
+import { DefaultScreenPosts } from "../NestedScreens/DefaultScreenPosts";
+import { CommentsScreen } from "../NestedScreens/CommentsScreen";
+import { MapScreen } from "../NestedScreens/MapScreen";
+
+const NestedScreen = createStackNavigator();
 
 export const PostsScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text>Публікації</Text>
-      <TouchableWithoutFeedback
-        onPress={() => Alert.alert("Повернення на логін")}
-      >
-        <View>
-          <Entypo name="log-out" size={24} color="black" />
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+    <NestedScreen.Navigator screenOptions={{ showLabel: false }}>
+      <NestedScreen.Screen 
+          options={{
+            title: false,
+            headerShown: false,
+          }}
+        name="DefaultScreen"
+        component={DefaultScreenPosts}
+      />
+      <NestedScreen.Screen name="Comments" component={CommentsScreen} />
+      <NestedScreen.Screen name="Map" component={MapScreen} />
+    </NestedScreen.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "flex-start", alignItems: "center" },
-});

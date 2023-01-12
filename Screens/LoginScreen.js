@@ -18,7 +18,8 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import validator from "validator";
 import { useNavigation } from "@react-navigation/native";
 
-export const LoginScreen = (isAuth) => {
+export const LoginScreen = () => {
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidePass, setHidePass] = useState(true);
