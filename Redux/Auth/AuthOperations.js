@@ -7,8 +7,7 @@ import {
 import { auth } from "../../Firebase/config";
 import { authSlice } from "./AuthReducer";
 import { Alert } from "react-native";
-
-
+import { updateProfile } from "firebase/auth";
 
 export const authSignUpUser = (email, password, name) => async (
   dispatch,
@@ -16,12 +15,16 @@ export const authSignUpUser = (email, password, name) => async (
 ) => {
   try {
     const user = await createUserWithEmailAndPassword(auth, email, password);
-    const currentUser = auth.currentUser;
-    currentUser.displayName = name;
+    const currentUser = await auth.currentUser;
+    await updateProfile(currentUser, { displayName: name });
+    console.log("displayName", auth.currentUser.email);
+    console.log("displayName", auth.currentUser.displayName);
+    console.log("uid", auth.currentUser.uid);
+    console.log("currentUser", auth.currentUser);
     dispatch(
       authSlice.actions.updateUserProfile({
-        userId: currentUser.uid,
-        nickName: currentUser.displayName,
+        userId: auth.currentUser.uid,
+        nickName: auth.currentUser.displayName,
         stateChange: true,
       })
     );
@@ -52,8 +55,8 @@ export const authSignInUser = (email, password) => async (
 };
 
 export const authSignOutUser = () => async (dispatch, getState) => {
-    await signOut(auth);
-    dispatch(authSlice.actions.authSignOut())
+  await signOut(auth);
+  dispatch(authSlice.actions.authSignOut());
 };
 
 export const authStateCahngeUser = () => async (dispatch, getState) => {
