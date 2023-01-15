@@ -2,6 +2,8 @@ import React, { useState,useEffect } from "react";
 import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Camera } from "expo-camera";
 import * as Location from 'expo-location';
+import { storage } from "../../Firebase/config";
+import { ref, uploadBytes } from "firebase/storage";
 
 export const CreateScreen = ({navigation}) => {
 const [camera, setCamera] = useState(null);
@@ -11,13 +13,11 @@ const [errorMsg, setErrorMsg] = useState(null);
 
 useEffect(() => {
   (async () => {
-    
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       setErrorMsg('Permission to access location was denied');
       return;
     }
-
     let location = await Location.getCurrentPositionAsync({});
     setLocation(location);
   })();
@@ -30,15 +30,29 @@ if (errorMsg) {
   text = JSON.stringify(location);
 }
 
-
  const takePhoto = async() => { 
-  const makePhoto = await camera.takePictureAsync();
-  setPhoto(makePhoto.uri);
-  console.log("photo", photo);
-  console.log("location",location);
+  const { uri } = await camera.takePictureAsync();
   let locations = await Location.getCurrentPositionAsync({});
+  setPhoto(uri);
   setLocation(locations);
  }
+
+ const sendPhoto = () => {
+  uploadPhotoToServer();
+  navigation.navigate("DefaultScreen", { photo });
+};
+
+const uploadPhotoToServer = async () => {
+  const response = await fetch(photo);
+  const file = await response.blob();
+  console.log("file",file);
+  console.log("response",response);
+  const uniquePostId = Date.now().toString();
+
+  const storageRef  = ref(storage,`postImage/${uniquePostId}`);
+  await uploadBytes(storageRef, file);
+};
+
 
   return (
     <View style={styles.container}>
@@ -56,9 +70,7 @@ if (errorMsg) {
       </Camera>
       <View style={styles.send_btn_wrap}>
           <TouchableOpacity
-          onPress={()=>{
-            navigation.navigate('DefaultScreen', {photo})
-          }}
+          onPress={sendPhoto}
           style={styles.send_btn_container}
         >
           <Text style={styles.send_btn_text}>ДОДАТИ</Text>
