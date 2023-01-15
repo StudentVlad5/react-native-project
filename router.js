@@ -6,13 +6,19 @@ import { LoginScreen } from "./Screens/LoginScreen";
 import { CreateScreen } from "./Screens/MainScreen/CreateScreen";
 import { ProfileScreen } from "./Screens/MainScreen/ProfileScreen";
 import { PostsScreen } from "./Screens/MainScreen/PostsScreen";
-import { AntDesign, Feather, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Feather,
+  Entypo,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import { authSignOutUser } from "./Redux/Auth/AuthOperations";
+import { useDispatch } from "react-redux";
 
-
-export const useRoute = () => {
+export const useRoute = (isAuth) => {
   const Stack = createNativeStackNavigator();
   const MainTab = createBottomTabNavigator();
-  const [isAuth, setIsAuth] = useState(true);
+  const dispatch = useDispatch();
 
   if (!isAuth) {
     return (
@@ -36,16 +42,21 @@ export const useRoute = () => {
           options={{
             title: "Публікації",
             headerStyle: {
-              backgroundColor: "#f4511e"
+              backgroundColor: "#f4511e",
             },
-            headerTitleAlign: 'center',
+            headerTitleAlign: "center",
             headerTintColor: "#fff",
             headerTitleStyle: {
               fontWeight: "bold",
               fontSize: 20,
             },
             headerRight: () => (
-              <Entypo name="log-out" size={24} color="black" onPress={()=>setIsAuth(false)}/>
+              <Entypo
+                name="log-out"
+                size={24}
+                color="black"
+                onPress={() => {dispatch(authSignOutUser())}}
+              />
             ),
             tabBarIcon: ({ focused, size, color }) => (
               <MaterialCommunityIcons
@@ -59,19 +70,24 @@ export const useRoute = () => {
           component={PostsScreen}
         />
         <MainTab.Screen
-            options={{
+          options={{
             title: "Створити публікацію",
             headerStyle: {
-              backgroundColor: "#f4511e"
+              backgroundColor: "#f4511e",
             },
-            headerTitleAlign: 'center',
+            headerTitleAlign: "center",
             headerTintColor: "#fff",
             headerTitleStyle: {
               fontWeight: "bold",
               fontSize: 20,
             },
             headerRight: () => (
-              <Entypo name="log-out" size={24} color="black" onPress={()=>setIsAuth(false)}/>
+              <Entypo
+                name="log-out"
+                size={24}
+                color="black"
+                onPress={() => {dispatch(authSignOutUser())}}
+              />
             ),
             tabBarIcon: ({ focused, size, color }) => (
               <AntDesign name="pluscircleo" size={size} color={color} />
@@ -84,16 +100,21 @@ export const useRoute = () => {
           options={{
             title: "Профайл",
             headerStyle: {
-              backgroundColor: "#f4511e"
+              backgroundColor: "#f4511e",
             },
-            headerTitleAlign: 'center',
+            headerTitleAlign: "center",
             headerTintColor: "#fff",
             headerTitleStyle: {
               fontWeight: "bold",
               fontSize: 20,
             },
             headerRight: () => (
-              <Entypo name="log-out" size={24} color="black" onPress={()=>setIsAuth(false)}/>
+              <Entypo
+                name="log-out"
+                size={24}
+                color="black"
+                onPress={() => {dispatch(authSignOutUser())}}
+              />
             ),
             tabBarIcon: ({ focused, size, color }) => (
               <Feather name="user" size={size} color={color} />

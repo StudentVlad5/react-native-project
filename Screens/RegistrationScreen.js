@@ -17,8 +17,10 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import validator from "validator";
+import { authSignUpUser } from "../Redux/Auth/AuthOperations";
+import { useDispatch } from "react-redux";
 
-export const RegistrationScreen = ({navigation}) => {
+export const RegistrationScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,6 +28,8 @@ export const RegistrationScreen = ({navigation}) => {
   const [nameHoverInput, setNameHoverInput] = useState(false);
   const [emailHoverInput, setEmailHoverInput] = useState(false);
   const [passwordHoverInput, setPasswordHoverInput] = useState(false);
+
+  const dispatch = useDispatch();
 
   const nameHandler = (text) => setName(text);
   const emailHandler = (text) => setEmail(text);
@@ -35,6 +39,7 @@ export const RegistrationScreen = ({navigation}) => {
     Keyboard.dismiss();
     if (validator.isEmail(email)) {
       Alert.alert("Дані реєстрації", `${name} + ${email} + ${password}`);
+      dispatch(authSignUpUser( email, password, name ));
     } else {
       Alert.alert("Невірно вказано email");
     }
@@ -122,7 +127,9 @@ export const RegistrationScreen = ({navigation}) => {
                   >
                     <Text style={styles.btnText}>Зареєструватися</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={()=>navigation.navigate('Login')}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Login")}
+                  >
                     <Text style={styles.logInTitle}>
                       Вже зареєстрований? Увійти{" "}
                     </Text>

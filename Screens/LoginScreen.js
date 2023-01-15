@@ -17,6 +17,9 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome5";
 import validator from "validator";
 import { useNavigation } from "@react-navigation/native";
+import { authSignInUser } from "../Redux/Auth/AuthOperations";
+import { useDispatch } from "react-redux";
+
 
 export const LoginScreen = () => {
   
@@ -29,11 +32,13 @@ export const LoginScreen = () => {
 
   const emailHandler = (text) => setEmail(text);
   const passwordHandler = (text) => setPassword(text);
+  const dispatch = useDispatch();
 
   const onLogin = () => {
     Keyboard.dismiss();
     if (validator.isEmail(email)) {
       Alert.alert("Дані для входу", `${email} + ${password}`);
+      dispatch(authSignInUser(email, password ));
     } else {
       Alert.alert("Невірно вказано email");
     }
