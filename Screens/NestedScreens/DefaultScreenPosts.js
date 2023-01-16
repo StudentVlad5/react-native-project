@@ -37,16 +37,22 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
               source={{ uri: item.photo }}
               style={{ width: 350, height: 200 }}
             />
+            <View style={styles.container_btn}>
+              <Button
+                style={styles.btn}
+                title="перейти до карти"
+                onPress={() =>
+                  navigation.navigate("Map", { location: item.location })
+                }
+              />
+              <Button
+                style={styles.btn}
+                title="перейти до коментарів"
+                onPress={() => navigation.navigate("Comments")}
+              />
+            </View>
           </View>
         )}
-      />
-      <Button
-        title="перейти до карти"
-        onPress={() => navigation.navigate("Map")}
-      />
-      <Button
-        title="перейти до коментарів"
-        onPress={() => navigation.navigate("Comments")}
       />
     </View>
   );
@@ -56,5 +62,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
+  },
+  container_btn: {
+    padding: 5,
+  },
+  btn: {
+    margin: 5,
   },
 });
