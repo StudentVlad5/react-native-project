@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import {
   Text,
   View,
@@ -32,7 +32,7 @@ export const CreateScreen = ({ navigation }) => {
       }
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-    })();
+    });
   }, []);
 
   let text = "Waiting..";
@@ -53,20 +53,20 @@ export const CreateScreen = ({ navigation }) => {
 
   const sendPhoto = () => {
     uploadPostToServer();
-    navigation.navigate("DefaultScreen");
+    navigation.navigate("DefaultScreen", {photo});
   };
 
   const uploadPostToServer = async () => {
     const photo = await uploadPhotoToServer();
-    const createPost = doc(collection(db, "posts")); 
-    await setDoc(createPost,  {
+    const createPost = doc(collection(db, "posts"));
+    await setDoc(createPost, {
       photo,
       comment,
       location: location.coords,
       userId,
       nickName,
     });
-  }
+  };
   const uploadPhotoToServer = async () => {
     const response = await fetch(photo);
     const file = await response.blob();

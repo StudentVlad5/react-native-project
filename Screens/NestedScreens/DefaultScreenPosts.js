@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, FlatList, Image, Button } from "react-native";
-import { collection, getDocs, onSnapshot, doc } from "firebase/firestore";
+import { View, StyleSheet, FlatList, Image, Button, Text } from "react-native";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../Firebase/config";
 
 export const DefaultScreenPosts = ({ route, navigation }) => {
@@ -8,18 +8,24 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
 
   const getAllPost = async () => {
     const allPosts = await getDocs(collection(db, "posts"));
-    console.log("allPosts", allPosts);
     const arrowAllPost = [];
     allPosts.forEach((doc) => {
       arrowAllPost.push({ ...doc.data(), id: doc.id });
       setPosts(arrowAllPost);
+      console.log("posts", posts);
     });
   };
 
   useEffect(() => {
-    getAllPost();
-  }, []);
+    if (route.params) {
+      setTimeout(()=>{getAllPost()},1000);
+      route.params = null
+    }
+  }, [route.params]);
 
+  useEffect(() => {
+   getAllPost()}, []);
+   
   return (
     <View style={styles.container}>
       <FlatList
@@ -37,6 +43,9 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
               source={{ uri: item.photo }}
               style={{ width: 350, height: 200 }}
             />
+            <View>
+              <Text>{item.comment}</Text>
+            </View>
             <View style={styles.container_btn}>
               <Button
                 style={styles.btn}
@@ -48,7 +57,9 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
               <Button
                 style={styles.btn}
                 title="перейти до коментарів"
-                onPress={() => navigation.navigate("Comments")}
+                onPress={() =>
+                  navigation.navigate("Comments", { postId: item.id })
+                }
               />
             </View>
           </View>
