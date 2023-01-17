@@ -39,7 +39,7 @@ export const RegistrationScreen = ({ navigation }) => {
     Keyboard.dismiss();
     if (validator.isEmail(email)) {
       Alert.alert("Дані реєстрації", `${name} + ${email} + ${password}`);
-      dispatch(authSignUpUser( email, password, name ));
+      dispatch(authSignUpUser(email, password, name));
     } else {
       Alert.alert("Невірно вказано email");
     }

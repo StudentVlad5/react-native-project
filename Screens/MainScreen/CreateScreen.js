@@ -47,8 +47,6 @@ export const CreateScreen = ({ navigation }) => {
     let locations = await Location.getCurrentPositionAsync({});
     setPhoto(uri);
     setLocation(locations);
-    console.log("location", location);
-    console.log("comment", comment);
   };
 
   const sendPhoto = () => {

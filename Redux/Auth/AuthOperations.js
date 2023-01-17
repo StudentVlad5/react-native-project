@@ -17,10 +17,7 @@ export const authSignUpUser = (email, password, name) => async (
     const user = await createUserWithEmailAndPassword(auth, email, password);
     const currentUser = await auth.currentUser;
     await updateProfile(currentUser, { displayName: name });
-    console.log("displayName", auth.currentUser.email);
-    console.log("displayName", auth.currentUser.displayName);
-    console.log("uid", auth.currentUser.uid);
-    console.log("currentUser", auth.currentUser);
+    
     dispatch(
       authSlice.actions.updateUserProfile({
         userId: auth.currentUser.uid,

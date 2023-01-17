@@ -12,20 +12,19 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
     allPosts.forEach((doc) => {
       arrowAllPost.push({ ...doc.data(), id: doc.id });
       setPosts(arrowAllPost);
-      console.log("posts", posts);
     });
   };
 
   useEffect(() => {
     if (route.params) {
-      setTimeout(()=>{getAllPost()},1000);
+      setTimeout(()=>{getAllPost()},100);
       route.params = null
     }
   }, [route.params]);
 
   useEffect(() => {
    getAllPost()}, []);
-   
+
   return (
     <View style={styles.container}>
       <FlatList

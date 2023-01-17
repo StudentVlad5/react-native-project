@@ -20,7 +20,7 @@ export const CommentsScreen = ({ route }) => {
   const { nickName } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    setTimeout(()=>{getAllPosts()},1000);
+    setTimeout(()=>{getAllPosts()},100);
   }, [status]);
 
   const createPost = async () => {
