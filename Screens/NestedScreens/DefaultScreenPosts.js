@@ -40,7 +40,7 @@ export const DefaultScreenPosts = ({ route, navigation }) => {
           >
             <Image
               source={{ uri: item.photo }}
-              style={{ width: 350, height: 200 }}
+              style={{ width: 350, height: 200, borderRadius: 10 }}
             />
             <View>
               <Text>{item.comment}</Text>

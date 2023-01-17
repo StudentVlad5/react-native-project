@@ -104,5 +104,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     padding: 10,
     marginBottom: 10,
+    borderRadius: 10,
   },
 });
