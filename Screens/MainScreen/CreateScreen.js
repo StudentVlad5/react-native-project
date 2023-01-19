@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
   Text,
@@ -9,9 +9,9 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
-  Alert
+  Alert,
 } from "react-native";
-import { Camera } from "expo-camera";
+import { Camera, CameraType } from "expo-camera";
 import * as Location from "expo-location";
 import { storage, db } from "../../Firebase/config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -23,19 +23,28 @@ export const CreateScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [comment, setComment] = useState("");
+  const [statusPermissionCamera, setStatusPermissionCamera] = useState(null);
+  const [type, setType] = useState(CameraType.back);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
   const { userId, nickName } = useSelector((state) => state.auth);
- 
-  const requestCameraPermission = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Permission to access location was denied");
-        return;
-      }
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+
+  function toggleCameraType() {
+    setType((current) =>
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
+  }
+
+  const requestLocationPermission = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Permission to access location was denied");
+      return;
     }
-  requestCameraPermission()
-  
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location);
+  };
+  requestLocationPermission();
+
   let text = "Waiting..";
   if (errorMsg) {
     text = errorMsg;
@@ -52,7 +61,7 @@ export const CreateScreen = ({ navigation }) => {
 
   const sendPhoto = () => {
     uploadPostToServer();
-    navigation.navigate("DefaultScreen", {photo});
+    navigation.navigate("DefaultScreen", { photo });
   };
 
   const uploadPostToServer = async () => {
@@ -81,7 +90,7 @@ export const CreateScreen = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <Camera style={styles.camera} ref={setCamera}>
+        <Camera style={styles.camera} type={type} ref={setCamera}>
           {photo && (
             <View style={styles.takePhotoContent}>
               <Image
@@ -93,8 +102,12 @@ export const CreateScreen = ({ navigation }) => {
           <TouchableOpacity onPress={takePhoto} style={styles.btn_container}>
             <Text style={styles.btn_text}>фото</Text>
           </TouchableOpacity>
-        </Camera>
-
+       </Camera>
+        <View>
+        <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
+            <Text style={styles.text}>Flip Camera</Text>
+          </TouchableOpacity>
+        </View>
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
@@ -179,4 +192,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 10,
   },
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+  }
 });
