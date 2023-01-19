@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert
 } from "react-native";
 import { Camera } from "expo-camera";
 import * as Location from "expo-location";
@@ -23,18 +24,18 @@ export const CreateScreen = ({ navigation }) => {
   const [errorMsg, setErrorMsg] = useState(null);
   const [comment, setComment] = useState("");
   const { userId, nickName } = useSelector((state) => state.auth);
-  useEffect(() => {
-    (async () => {
+ 
+  const requestCameraPermission = async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+        Alert.alert("Permission to access location was denied");
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
-    });
-  }, []);
-
+    }
+  requestCameraPermission()
+  
   let text = "Waiting..";
   if (errorMsg) {
     text = errorMsg;
